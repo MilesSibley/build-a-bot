@@ -10,12 +10,11 @@
     </router-link>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
-    <span class="sale" v-show="selectedPart.onSale">Sale!</span>
+    <span v-pin="{bottom: '10px', right: '5px'}" class="sale" v-show="selectedPart.onSale">Sale!</span>
   </div>
 </template>
 
 <script>
-
 function getPreviousValidIndex(index, length) {
   const deprecatedIndex = index - 1;
   return deprecatedIndex < 0 ? length - 1 : deprecatedIndex;
@@ -27,50 +26,50 @@ function getNextValidIndex(index, length) {
 }
 
 export default {
-    props: {
-        parts:{
-            type: Array,
-            required: true
-        },
-        position: {
-            type: String,
-            required: true,
-            validator(value) {
-                return ['left','right','top','bottom','center'].includes(value);
-            }
-        }
-    },
-    data() {
-        return { selectedPartIndex: 0 };
-    },
-    computed: {
-        selectedPart() {
-        return this.parts[this.selectedPartIndex];
-        },
-    },
-    created(){
-        this.emitSelectedPart();               
-    },
-    updated(){
-        this.emitSelectedPart();         
-    },
-    methods: {
-      emitSelectedPart (){
-          this.$emit('partSelected', this.selectedPart);
+  props: {
+      parts:{
+          type: Array,
+          required: true
       },
-      selectNextPart() {
-          this.selectedPartIndex = getNextValidIndex(
-              this.selectedPartIndex,
-              this.parts.length
-          );
+      position: {
+          type: String,
+          required: true,
+          validator(value) {
+              return ['left','right','top','bottom','center'].includes(value);
+          }
+      }
+  },
+  data() {
+      return { selectedPartIndex: 0 };
+  },
+  computed: {
+      selectedPart() {
+      return this.parts[this.selectedPartIndex];
       },
-      selectPreviousPart() {
-          this.selectedPartIndex = getPreviousValidIndex(
-              this.selectedPartIndex,
-              this.parts.length
-          );
-      },    
+  },
+  created(){
+      this.emitSelectedPart();               
+  },
+  updated(){
+      this.emitSelectedPart();         
+  },
+  methods: {
+    emitSelectedPart (){
+        this.$emit('partSelected', this.selectedPart);
     },
+    selectNextPart() {
+        this.selectedPartIndex = getNextValidIndex(
+            this.selectedPartIndex,
+            this.parts.length
+        );
+    },
+    selectPreviousPart() {
+        this.selectedPartIndex = getPreviousValidIndex(
+            this.selectedPartIndex,
+            this.parts.length
+        );
+    },    
+  },
 };
 </script>
 
@@ -82,9 +81,6 @@ export default {
   border: 3px solid #aaa;
 }
 .sale {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
   color: white;
   background-color: red;
   padding: 3px;
